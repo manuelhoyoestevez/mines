@@ -28,57 +28,57 @@
   }
   
   table.mines-board td.unpressed {
-    background-image: url("../images/unpressed.gif");
+    background-image: url("../images/unpressed.bmp");
     opacity: 1.0;
   }
   
   table.mines-board td.mine {
-    background-image: url("../images/mine.gif");
+    background-image: url("../images/mine.bmp");
     opacity: 1.0;
   }
   
   table.mines-board td.pressed_0 {
-    background-image: url("../images/0.gif");
+    background-image: url("../images/0.bmp");
     opacity: 1.0;
   }
   
   table.mines-board td.pressed_1 {
-    background-image: url("../images/1.gif");
+    background-image: url("../images/1.bmp");
     opacity: 1.0;
   }
   
   table.mines-board td.pressed_2 {
-    background-image: url("../images/2.gif");
+    background-image: url("../images/2.bmp");
     opacity: 1.0;
   }
   
   table.mines-board td.pressed_3 {
-    background-image: url("../images/3.gif");
+    background-image: url("../images/3.bmp");
     opacity: 1.0;
   }
   
   table.mines-board td.pressed_4 {
-    background-image: url("../images/4.gif");
+    background-image: url("../images/4.bmp");
     opacity: 1.0;
   }
   
   table.mines-board td.pressed_5 {
-    background-image: url("../images/5.gif");
+    background-image: url("../images/5.bmp");
     opacity: 1.0;
   }
 
   table.mines-board td.pressed_6 {
-    background-image: url("../images/6.gif");
+    background-image: url("../images/6.bmp");
     opacity: 1.0;
   }
 
   table.mines-board td.pressed_7 {
-    background-image: url("../images/7.gif");
+    background-image: url("../images/7.bmp");
     opacity: 1.0;
   }
 
   table.mines-board td.pressed_8 {
-    background-image: url("../images/8.gif");
+    background-image: url("../images/8.bmp");
     opacity: 1.0;
   }
   

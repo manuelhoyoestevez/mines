@@ -2,15 +2,16 @@ import React from 'react';
 import Board from '../core/board';
 
 export default class App extends React.Component {
+    // 20% - 21% de minas
     constructor(props) {
         super(props);
-        this.width = 30;
-        this.height = 16;
+        this.width = 110;
+        this.height = 55;
         this.mines = [];
 
         const total = this.height * this.width;
 
-        for(let k = 0; k < 99; k++) {
+        for(let k = 0; k < 10; k++) {
             const val = Math.floor(total * Math.random());
             this.mines.push({
                 i: Math.floor(val / this.width),
