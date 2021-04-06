@@ -1,0 +1,91 @@
+#main {
+    width:  640px;
+    height: 400px;
+    border: 1px solid black;
+    background-image: url("images/background/kremlin_1400x1050.jpg");
+    background-color: red;
+    background-size: 640px 400px;
+  }
+  
+  table.mines-board  {
+    position: relative;
+    top: 20px;
+    left: 20px;
+    
+    border: 1px solid red;
+  
+    border-collapse: separate;
+    border-spacing: 0px;
+  
+    background-color: black;
+    opacity: 1.0;
+  }
+  
+  table.mines-board td {
+    box-sizing: border-box;
+    width:16px;
+    height:16px;
+  }
+  
+  table.mines-board td.unpressed {
+    background-image: url("../images/unpressed.gif");
+    opacity: 1.0;
+  }
+  
+  table.mines-board td.mine {
+    background-image: url("../images/mine.gif");
+    opacity: 1.0;
+  }
+  
+  table.mines-board td.pressed_0 {
+    background-image: url("../images/0.gif");
+    opacity: 1.0;
+  }
+  
+  table.mines-board td.pressed_1 {
+    background-image: url("../images/1.gif");
+    opacity: 1.0;
+  }
+  
+  table.mines-board td.pressed_2 {
+    background-image: url("../images/2.gif");
+    opacity: 1.0;
+  }
+  
+  table.mines-board td.pressed_3 {
+    background-image: url("../images/3.gif");
+    opacity: 1.0;
+  }
+  
+  table.mines-board td.pressed_4 {
+    background-image: url("../images/4.gif");
+    opacity: 1.0;
+  }
+  
+  table.mines-board td.pressed_5 {
+    background-image: url("../images/5.gif");
+    opacity: 1.0;
+  }
+
+  table.mines-board td.pressed_6 {
+    background-image: url("../images/6.gif");
+    opacity: 1.0;
+  }
+
+  table.mines-board td.pressed_7 {
+    background-image: url("../images/7.gif");
+    opacity: 1.0;
+  }
+
+  table.mines-board td.pressed_8 {
+    background-image: url("../images/8.gif");
+    opacity: 1.0;
+  }
+  
+  div#info table{
+    color: white;
+    background-color: black;
+    opacity: 0.7;
+    width: 200px;
+  }
+  
