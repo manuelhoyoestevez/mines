@@ -12,7 +12,7 @@ const checkDimension = dim => {
 };
 
 class Board {
-    constructor(width, height, mines) {
+    constructor(height, width, mines) {
         this.width = checkDimension(width);
         this.height = checkDimension(height);
 
@@ -32,10 +32,11 @@ class Board {
     }
 
     celd(i, j) {
-        if (i < 0 || i >= this.width || j < 0 || j >= this.height) {
+        if (i < 0 || i >= this.height || j < 0 || j >= this.width) {
             return undefined;
         }
-        return this.celd[i][j];
+
+        return this.celds[i][j];
     }
 
     press(i, j) {
@@ -80,6 +81,17 @@ class Board {
         }
 
         this.celds[i][j] = ret;
+
+        if (ret === 0) {
+            this.press(i - 1, j - 1);
+            this.press(i    , j - 1);
+            this.press(i + 1, j - 1);
+            this.press(i - 1, j    );
+            this.press(i + 1, j    );
+            this.press(i - 1, j + 1);
+            this.press(i    , j + 1);
+            this.press(i + 1, j + 1);
+        }
 
         return ret;
     }

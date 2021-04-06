@@ -8,17 +8,17 @@ export default class App extends React.Component {
         this.height = 16;
         this.mines = [];
 
-        const total = this.width * this.height;
+        const total = this.height * this.width;
 
         for(let k = 0; k < 99; k++) {
             const val = Math.floor(total * Math.random());
             this.mines.push({
                 i: Math.floor(val / this.width),
-                j: val % this.width
+                j: Math.floor(val % this.width)
             });
         }
         
-        this.state = { board: new Board(this.width, this.height, this.mines) };
+        this.state = { board: new Board(this.height, this.width, this.mines) };
 
         this.pressCeld = this.pressCeld.bind(this);
         this.markCeld = this.markCeld.bind(this);
