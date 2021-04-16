@@ -3,29 +3,27 @@ import React from 'react';
 export default class Board extends React.Component {
     constructor(props) {
         super(props);
-
         this.pressCeld = this.pressCeld.bind(this);
         this.markCeld = this.markCeld.bind(this);
     }
 
     getCeldClassName(celd) {
-        if (celd === 'UNPRESSED') {
-            return 'unpressed';
-        }
+        switch (celd) {
+            case 'UNPRESSED': return 'unpressed';
+            case 'MINE':      return 'mine';
+            case 'MARKED':    return 'marked';
+            default:
 
-        if (celd === 'MINE') {
-            return 'mine';
-        }
+                if (typeof celd === 'number') {
+                    return `pressed_${celd}`;
+                }
 
-        if (typeof celd === 'number') {
-            return `pressed_${celd}`;
+                return '';
         }
-
-        return '';
     }
 
     getCeldContent(celd) {
-        return celd;
+        return '';
     }
 
     pressCeld(event) {

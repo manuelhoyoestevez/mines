@@ -31,6 +31,11 @@
     background-image: url("../images/unpressed.bmp");
     opacity: 1.0;
   }
+
+  table.mines-board td.marked {
+    background-image: url("../images/marked.bmp");
+    opacity: 1.0;
+  }
   
   table.mines-board td.mine {
     background-image: url("../images/mine.bmp");

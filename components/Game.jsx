@@ -78,7 +78,6 @@ export default class Game extends React.Component {
 
             state.game = UserInterface.generateGame(height, width, mines);
             state.gaming = true;
-console.log('state', state);
             return state;
         });
         return false;
@@ -170,6 +169,7 @@ console.log('state', state);
                         <button type="submit" className="btn btn-primary">Play!</button>
                     </div>
                 </div>
+                <div>Status: {this.state.game ? this.state.game.status : 'NONE' }</div>
                 <Board game={this.state.game} gaming={this.state.gaming} pressCeld={this.pressCeld} markCeld={this.markCeld}></Board>
             </form>
         );

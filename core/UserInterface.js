@@ -21,17 +21,21 @@ const TO_MARK = 'TO_MARK';
 
 class UserInterface {
 
-    constructor(gameInterface, table) {
+    constructor(gameInterface, tableBoard) {
         this.gameInterface = gameInterface;
-        this.table = table;
+        this.tableBoard = tableBoard;
+    }
+
+    get status() {
+        return this.gameInterface.status;
     }
 
     get height() {
-        return this.table.height;
+        return this.tableBoard.height;
     }
 
     get width() {
-        return this.table.width;
+        return this.tableBoard.width;
     }
 
     get celds() {
@@ -55,16 +59,20 @@ class UserInterface {
             return celd;
         }
 
-        return this.table.getCeld(i, j);
+        return this.tableBoard.getCeld(i, j);
     }
 
     markCeld(i, j) {
+        if (this.tableBoard.getCeld(i, j) === MARKED) {
+            this.tableBoard.setCeld(i, j, UNPRESSED);
+            return true;
+        }
+
         if (this.gameInterface.getCeld(i, j) !== UNPRESSED) {
             return false;
         }
 
-        this.table.setCeld(i, j, MARKED);
-
+        this.tableBoard.setCeld(i, j, MARKED);
         return true;
     }
 
@@ -76,7 +84,7 @@ class UserInterface {
 
     // Descubierta y no agotada
     isPlayable(i, j) {
-        if (this.table.getCeld(i, j) === MARKED) {
+        if (this.tableBoard.getCeld(i, j) === MARKED) {
             return false;
         }
 
@@ -125,9 +133,10 @@ class UserInterface {
 }
 
 UserInterface.generateGame = (height, width, mines) => {
-    const table = new TableBoard(height, width);
-    const game = GameInterface.generateGame(height, width, mines);
-    return new UserInterface(game, table);
+    const tableBoard = new TableBoard(height, width);
+    tableBoard.fillCelds(UNPRESSED);
+    const gameInterface = GameInterface.generateGame(height, width, mines);
+    return new UserInterface(gameInterface, tableBoard);
 };
 
  export default UserInterface;
