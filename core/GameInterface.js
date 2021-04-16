@@ -9,6 +9,7 @@ const STARTED = 'STARTED';
 
 // Celd statuses
 const MINE = 'MINE';
+const PRESSED = 'PRESSED';
 const UNPRESSED = 'UNPRESSED';
 
 class GameInterface {
@@ -24,7 +25,7 @@ class GameInterface {
         const celd = this.tableBoard.getCeld(i, j);
         switch(celd) {
             case MINE:
-                return MINE;
+                return this.status === LOST ? MINE : UNPRESSED;
             case UNPRESSED:
                 return UNPRESSED;
         }
@@ -35,7 +36,7 @@ class GameInterface {
         const celd = this.tableBoard.getCeld(i, j);
 
         if (this.status === READY) {
-            this.tableBoard.setCeld(i, j, 'PRESSED');
+            this.tableBoard.setCeld(i, j, PRESSED);
             this.tableBoard.disseminate(this.mines, MINE, celd => celd === UNPRESSED);
             this.status = STARTED;
         }

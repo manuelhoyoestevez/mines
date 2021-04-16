@@ -125,11 +125,11 @@ export default class Game extends React.Component {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group row">
-                            <label className="col-sm-6 col-form-label" htmlFor="heigth">Height</label>
+                            <label className="col-sm-6 col-form-label" htmlFor="height">Height</label>
                             <div className="col-sm-6">
                                 <input
-                                    id="heigth"
-                                    name="heigth"
+                                    id="height"
+                                    name="height"
                                     type="number"
                                     step="1"
                                     defaultValue={this.props.height}
@@ -140,7 +140,7 @@ export default class Game extends React.Component {
                                 />
                             </div>
                             <small id="heigthHelp" className={`form-text text-danger`}>
-                                { this.state.messages.heigth } 
+                                { this.state.messages.height }
                             </small>
                         </div>
                     </div>
@@ -169,7 +169,8 @@ export default class Game extends React.Component {
                         <button type="submit" className="btn btn-primary">Play!</button>
                     </div>
                 </div>
-                <div>Status: {this.state.game ? this.state.game.status : 'NONE' }</div>
+                <div>Status: {this.state.game ? this.state.game.status : '' }</div>
+                <div>Remain: {this.state.game ? this.state.game.remain : '' }</div>
                 <Board game={this.state.game} gaming={this.state.gaming} pressCeld={this.pressCeld} markCeld={this.markCeld}></Board>
             </form>
         );

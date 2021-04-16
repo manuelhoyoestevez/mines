@@ -13,11 +13,9 @@ export default class Board extends React.Component {
             case 'MINE':      return 'mine';
             case 'MARKED':    return 'marked';
             default:
-
                 if (typeof celd === 'number') {
                     return `pressed_${celd}`;
                 }
-
                 return '';
         }
     }
@@ -73,6 +71,6 @@ export default class Board extends React.Component {
                     { this.tbody }
                 </tbody>
             </table>
-        ) : <div>Gaming: { this.props.gaming ? 'YES' : 'NO' }</div>;
+        ) : null;
     }
 }

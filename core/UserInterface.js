@@ -24,6 +24,7 @@ class UserInterface {
     constructor(gameInterface, tableBoard) {
         this.gameInterface = gameInterface;
         this.tableBoard = tableBoard;
+        this.marked = 0;
     }
 
     get status() {
@@ -36,6 +37,10 @@ class UserInterface {
 
     get width() {
         return this.tableBoard.width;
+    }
+
+    get remain() {
+        return this.gameInterface.mines - this.marked;
     }
 
     get celds() {
@@ -65,6 +70,7 @@ class UserInterface {
     markCeld(i, j) {
         if (this.tableBoard.getCeld(i, j) === MARKED) {
             this.tableBoard.setCeld(i, j, UNPRESSED);
+            this.marked--;
             return true;
         }
 
@@ -73,6 +79,7 @@ class UserInterface {
         }
 
         this.tableBoard.setCeld(i, j, MARKED);
+        this.marked++;
         return true;
     }
 
