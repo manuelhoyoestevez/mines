@@ -85,15 +85,23 @@ export default class Game extends React.Component {
 
     pressCeld(i, j) {
         this.setState(state => {
-            state.game.pressCeld(i, j);
-            return state;
+            try {
+                state.game.pressCeld(i, j);
+                return state;
+            } catch (err) {
+                console.error(err);
+            }
         });
     }
 
     markCeld(i, j) {
         this.setState(state => {
-            state.game.markCeld(i, j);
-            return state;
+            try {
+                state.game.markCeld(i, j);
+                return state;
+            } catch (err) {
+                console.error(err);
+            }
         });
     }
 

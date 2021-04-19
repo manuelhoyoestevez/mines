@@ -12,6 +12,11 @@ const MINE = 'MINE';
 const PRESSED = 'PRESSED';
 const UNPRESSED = 'UNPRESSED';
 
+const pushAll = (arr, plus) => {
+    plus.forEach(e => arr.push(e));
+    return arr;
+};
+
 class GameInterface {
     constructor(tableBoard, mines) {
         this.tableBoard = tableBoard;
@@ -43,11 +48,11 @@ class GameInterface {
 
         if (MINE === celd) {
             this.status = LOST;
-            return 0;
+            return [];
         }
 
         if (UNPRESSED !== celd) {
-            return 0;
+            return [];
         }
 
         this.pressedCelds++;
@@ -62,11 +67,9 @@ class GameInterface {
 
         this.tableBoard.setCeld(i, j, val);
 
-        if (val === 0) {
-            return adyacents.reduce((acc, [_i, _j]) => acc + this.pressCeld(_i, _j), 1);
-        }
-        
-        return 1;
+        const ret = [[i, j, val]];
+
+        return val > 0 ? ret : adyacents.reduce((arr, [_i, _j]) => pushAll(arr, this.pressCeld(_i, _j)), ret);
     }
 }
 
@@ -82,11 +85,11 @@ GameInterface.generateGame = (height, width, mines) => {
     const total = height * width;
 
     if (mines <= 0) {
-        throw new Error(`Bad mines number. Mines: [1, ${total}]`);
+        throw new Error(`Bad mines number. Mines: [1, ${total - 1}]`);
     }
 
     if (mines >= total) {
-        throw new Error(`Too many mines. Mines: [1, ${total}]`);
+        throw new Error(`Too many mines. Mines: [1, ${total - 1}]`);
     }
 
     const tableBoard = new TableBoard(height, width);
@@ -94,6 +97,15 @@ GameInterface.generateGame = (height, width, mines) => {
     tableBoard.fillCelds(UNPRESSED);
 
     return new GameInterface(tableBoard, mines);
+};
+
+GameInterface.generateTestGame = () => {
+    const tableBoard = new TableBoard(3, 4);
+
+    tableBoard.fillCelds(UNPRESSED);
+    tableBoard.setCeld(1, 1, MINE);
+
+    return new GameInterface(tableBoard, 0);
 };
 
 export default GameInterface;

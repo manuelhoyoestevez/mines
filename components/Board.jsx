@@ -12,6 +12,8 @@ export default class Board extends React.Component {
             case 'UNPRESSED': return 'unpressed';
             case 'MINE':      return 'mine';
             case 'MARKED':    return 'marked';
+            case 'TO_PRESS':  return 'to_press';
+            case 'TO_MARK':   return 'to_mark';
             default:
                 if (typeof celd === 'number') {
                     return `pressed_${celd}`;
@@ -29,7 +31,6 @@ export default class Board extends React.Component {
         const i = parseInt(event.target.getAttribute('i'));
         const j = parseInt(event.target.getAttribute('j'));
         this.props.pressCeld(i, j);
-        return false;
     }
 
     markCeld(event) {
@@ -37,7 +38,6 @@ export default class Board extends React.Component {
         const i = parseInt(event.target.getAttribute('i'));
         const j = parseInt(event.target.getAttribute('j'));
         this.props.markCeld(i, j);
-        return false;
     }
 
     get tbody() {

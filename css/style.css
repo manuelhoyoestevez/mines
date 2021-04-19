@@ -30,6 +30,16 @@
     background-image: url("../images/marked.bmp");
     opacity: 1.0;
   }
+
+  table.mines-board td.to_press {
+    background-image: url("../images/to_press.bmp");
+    opacity: 1.0;
+  }
+
+  table.mines-board td.to_mark {
+    background-image: url("../images/to_mark.bmp");
+    opacity: 1.0;
+  }
   
   table.mines-board td.mine {
     background-image: url("../images/mine.bmp");
