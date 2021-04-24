@@ -45,6 +45,12 @@ export default class TableBoard {
         }
     }
 
+    count(v) {
+        return this.celds.map(
+            arr => arr.reduce((a, c) => a + (c === v ? 1 : 0), 0)
+        ).reduce((a, c) => a + c);
+    }
+
     toInteger(i, j) {
         return i * this.width + j;
     }

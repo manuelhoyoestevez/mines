@@ -21,6 +21,7 @@ class GameInterface {
     constructor(tableBoard, mines) {
         this.tableBoard = tableBoard;
         this.status = READY;
+        this.last = null;
         this.mines = mines;
         this.pressedCelds = 0;
         this.targetCelds = this.tableBoard.width * this.tableBoard.height - this.mines;
@@ -48,10 +49,12 @@ class GameInterface {
 
         if (MINE === celd) {
             this.status = LOST;
+            this.last = celd;
             return [];
         }
 
         if (UNPRESSED !== celd) {
+            this.last = celd;
             return [];
         }
 
@@ -66,6 +69,8 @@ class GameInterface {
         const val = adyacents.reduce((acc, [_i, _j]) => acc + (MINE === this.tableBoard.getCeld(_i, _j) ? 1 : 0), 0);
 
         this.tableBoard.setCeld(i, j, val);
+
+        this.last = val;
 
         const ret = [[i, j, val]];
 
