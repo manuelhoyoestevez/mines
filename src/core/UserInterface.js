@@ -2,20 +2,13 @@ import TableBoard from './TableBoard';
 import GameInterface from './GameInterface';
 import Celds from './Celds';
 
-// Game statuses
-const WON = 'WON';
-const LOST = 'LOST';
-const READY = 'READY';
-const STARTED = 'STARTED';
-
-// Celd statuses
-const MINE = 'MINE';
-const UNPRESSED = 'UNPRESSED';
-
-// Extended celd statuses
-const MARKED = 'MARKED';
-const TO_PRESS = 'TO_PRESS';
-const TO_MARK = 'TO_MARK';
+import {
+    MINE,
+    UNPRESSED,
+    MARKED,
+    TO_PRESS,
+    TO_MARK
+} from './constants.json';
 
 class UserInterface {
 
@@ -91,6 +84,7 @@ class UserInterface {
             for (let j = 0; j < this.width; j++) {
                 this.rule2([i, j]);
                 this.rule1([i, j]);
+                this.rule3([i, j]);
             }
         }
 
@@ -98,6 +92,7 @@ class UserInterface {
             for (let j = 0; j < this.width; j++) {
                 this.rule2([i, j]);
                 this.rule1([i, j]);
+                this.rule3([i, j]);
             }
         }
     }
@@ -176,8 +171,7 @@ class UserInterface {
     }
 
     setToPress([i, j]) {
-        //this.tableBoard.setCeld(i, j, TO_PRESS);
-        this.pressCeld(i, j);
+        this.tableBoard.setCeld(i, j, TO_PRESS);
     }
 
     setToMark([i, j]) {
@@ -230,7 +224,7 @@ class UserInterface {
                     return;
                 }
 
-                Celds.difference(rA, rB).forEach(this.setToPress);
+                Celds.difference(FA, FB).forEach(this.setToPress);
             });
         }
     }

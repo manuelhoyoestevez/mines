@@ -1,16 +1,16 @@
 import TableBoard from './TableBoard';
 import adyacentCelds from './adyacents';
 
-// Game statuses
-const WON = 'WON';
-const LOST = 'LOST';
-const READY = 'READY';
-const STARTED = 'STARTED';
+import {
+    MINE,
+    PRESSED,
+    UNPRESSED,
 
-// Celd statuses
-const MINE = 'MINE';
-const PRESSED = 'PRESSED';
-const UNPRESSED = 'UNPRESSED';
+    WON,
+    LOST,
+    READY,
+    STARTED
+} from './constants.json';
 
 const pushAll = (arr, plus) => {
     plus.forEach(e => arr.push(e));
@@ -18,11 +18,11 @@ const pushAll = (arr, plus) => {
 };
 
 class GameInterface {
-    constructor(tableBoard, mines) {
+    constructor(tableBoard, mines, status = READY) {
         this.tableBoard = tableBoard;
-        this.status = READY;
-        this.last = null;
         this.mines = mines;
+        this.status = status;
+        this.last = null;
         this.pressedCelds = 0;
         this.targetCelds = this.tableBoard.width * this.tableBoard.height - this.mines;
     }

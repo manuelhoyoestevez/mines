@@ -9,9 +9,10 @@ const checkDimension = dim => {
 };
 
 export default class TableBoard {
-    constructor(height, width) {
+    constructor(height, width, random = null) {
         this.width = checkDimension(width);
         this.height = checkDimension(height);
+        this.random = typeof random === 'function' ? random : Math.random;
         this.celds = new Array(this.height);
 
         for (let i = 0; i < this.height; i++) {
@@ -43,6 +44,21 @@ export default class TableBoard {
                 this.celds[i][j] = v;
             }
         }
+    }
+
+    replaceCelds(replaceTable) {
+        const celds = new Array(this.height);
+
+        for (let i = 0; i < this.height; i++) {
+            celds[i] = new Array(this.width);
+            for (let j = 0; j < this.width; j++) {
+                const valueToReplace = this.celds[i][j];
+                const valueReplaced = replaceTable[valueToReplace]
+                celds[i][j] = valueReplaced !== undefined ? valueReplaced : valueToReplace;
+            }
+        }
+
+        return celds
     }
 
     count(v) {

@@ -1,0 +1,13 @@
+{
+    "MINE": "*",
+    "PRESSED": "P",
+    "UNPRESSED": "U",
+    "MARKED": "M",
+    "TO_PRESS": "Y",
+    "TO_MARK": "X",
+
+    "WON": "WON",
+    "LOST": "LOST",
+    "READY": "READY",
+    "STARTED": "STARTED"
+}

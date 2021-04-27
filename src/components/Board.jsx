@@ -1,4 +1,5 @@
 import React from 'react';
+import { UNPRESSED, MINE, MARKED, TO_PRESS, TO_MARK } from '../core/constants.json'
 
 export default class Board extends React.Component {
     constructor(props) {
@@ -9,11 +10,11 @@ export default class Board extends React.Component {
 
     getCeldClassName(celd) {
         switch (celd) {
-            case 'UNPRESSED': return 'unpressed';
-            case 'MINE':      return 'mine';
-            case 'MARKED':    return 'marked';
-            case 'TO_PRESS':  return 'to_press';
-            case 'TO_MARK':   return 'to_mark';
+            case UNPRESSED: return 'unpressed';
+            case MINE:      return 'mine';
+            case MARKED:    return 'marked';
+            case TO_PRESS:  return 'to_press';
+            case TO_MARK:   return 'to_mark';
             default:
                 if (typeof celd === 'number') {
                     return `pressed_${celd}`;
@@ -46,7 +47,7 @@ export default class Board extends React.Component {
         for(let i = 0; i < this.props.game.height; i++) {
             const tr = [];
             for(let j = 0; j < this.props.game.width; j++) {
-                const celd = this.props.game.celds[i][j]; // integer, UNPRESSED, MARKED, TO_PRESS, TO_MARK, MINE
+                const celd = this.props.game.celds[i][j];
                 tr.push(
                     <td key={ j }
                         i={ i }
