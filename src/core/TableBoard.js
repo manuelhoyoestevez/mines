@@ -46,21 +46,6 @@ export default class TableBoard {
         }
     }
 
-    replaceCelds(replaceTable) {
-        const celds = new Array(this.height);
-
-        for (let i = 0; i < this.height; i++) {
-            celds[i] = new Array(this.width);
-            for (let j = 0; j < this.width; j++) {
-                const valueToReplace = this.celds[i][j];
-                const valueReplaced = replaceTable[valueToReplace]
-                celds[i][j] = valueReplaced !== undefined ? valueReplaced : valueToReplace;
-            }
-        }
-
-        return celds
-    }
-
     count(v) {
         return this.celds.map(
             arr => arr.reduce((a, c) => a + (c === v ? 1 : 0), 0)

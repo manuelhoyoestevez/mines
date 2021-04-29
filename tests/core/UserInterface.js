@@ -4,7 +4,7 @@ import GameInterface from '../../src/core/GameInterface';
 import UserInterface from '../../src/core/UserInterface';
 import {
     STARTED,
-
+    WON,
     MINE,
     TO_MARK,
     TO_PRESS,
@@ -19,7 +19,7 @@ const X = TO_MARK,
 
 const assertGame = (userInterface, values, title) => {
     values.forEach((expected, k) => {
-        const [i, j] = userInterface.tableBoard.toCoords(k);
+        const [i, j] = userInterface.userTableBoard.toCoords(k);
         const actual = userInterface.v([i, j]);
 
         if (expected !== actual) {
@@ -30,24 +30,20 @@ const assertGame = (userInterface, values, title) => {
     });
 }
 
-const generateGame1 = () => {
-    const tableBoard1 = new TableBoard(3, 3, () => 0);
+const generateGame3x3 = () => {
+    const tableBoard = new TableBoard(3, 3, () => 0);
 
-    tableBoard1.fillCelds(UNPRESSED);
-    tableBoard1.setCeld(1, 0, MINE);
-    tableBoard1.setCeld(2, 2, MINE);
-
-    const tableBoard2 = new TableBoard(3, 3, () => 0);
-    tableBoard2.fillCelds(UNPRESSED);
-
-    const gameInterface = new GameInterface(tableBoard1, 2, STARTED);
-    const userInterface = new UserInterface(gameInterface, tableBoard2);
+    tableBoard.fillCelds(UNPRESSED);
+    tableBoard.setCeld(1, 0, MINE);
+    tableBoard.setCeld(2, 2, MINE);
+    const gameInterface = new GameInterface(tableBoard, 2, STARTED);
+    const userInterface = UserInterface.generateFromGame(gameInterface);
 
     assertGame(userInterface, [
         U, U, U,
         U, U, U,
         U, U, U
-    ], 'generateGame1');
+    ], 'generateGame3x3');
 
     return userInterface;
 };
@@ -64,7 +60,10 @@ const mark = (userInterface, i, j, values) => {
 
 describe('UserInterface: ', () => {
     it('Case 1' ,() => {
-        const userInterface = generateGame1();
+        const userInterface = generateGame3x3();
+
+        chai.assert.equal(userInterface.status, STARTED);
+        chai.assert.equal(userInterface.remain, 2);
 
         press(userInterface, 0, 0, [
             1, U, U,
@@ -72,11 +71,17 @@ describe('UserInterface: ', () => {
             U, U, U
         ]);
 
+        chai.assert.equal(userInterface.status, STARTED);
+        chai.assert.equal(userInterface.remain, 2);
+
         press(userInterface, 0, 1, [
             1, 1, Y,
             U, U, Y,
             U, U, U
         ]);
+
+        chai.assert.equal(userInterface.status, STARTED);
+        chai.assert.equal(userInterface.remain, 2);
 
         press(userInterface, 0, 2, [
             1, 1, 0,
@@ -84,21 +89,30 @@ describe('UserInterface: ', () => {
             Y, U, U
         ]);
 
+        chai.assert.equal(userInterface.status, STARTED);
+        chai.assert.equal(userInterface.remain, 1);
+
         press(userInterface, 2, 0, [
             1, 1, 0,
             X, 2, 1,
-            1, Y, U
+            1, Y, X
         ]);
+
+        chai.assert.equal(userInterface.status, STARTED);
+        chai.assert.equal(userInterface.remain, 0);
 
         press(userInterface, 2, 1, [
             1, 1, 0,
             X, 2, 1,
             1, 2, X
         ]);
+
+        chai.assert.equal(userInterface.status, WON);
+        chai.assert.equal(userInterface.remain, 0);
     });
 
     it('Case 2' ,() => {
-        const userInterface = generateGame1();
+        const userInterface = generateGame3x3();
 
         press(userInterface, 0, 0, [
             1, U, U,
@@ -132,7 +146,7 @@ describe('UserInterface: ', () => {
     });
 
     it('Case 3' ,() => {
-        const userInterface = generateGame1();
+        const userInterface = generateGame3x3();
 
         press(userInterface, 1, 1, [
             U, U, U,
@@ -160,7 +174,7 @@ describe('UserInterface: ', () => {
     });
 
     it('Case 4' ,() => {
-        const userInterface = generateGame1();
+        const userInterface = generateGame3x3();
 
         mark(userInterface, 1, 0, [
             U, U, U,

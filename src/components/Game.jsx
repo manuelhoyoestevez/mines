@@ -1,5 +1,6 @@
 import React from 'react';
 import Board from './Board.jsx';
+import GameInterface from '../core/GameInterface';
 import UserInterface from '../core/UserInterface';
 
 export default class Game extends React.Component {
@@ -76,7 +77,7 @@ export default class Game extends React.Component {
                 state.statuses.mines = 'valid';
             }
 
-            state.game = UserInterface.generateGame(height, width, mines);
+            state.game = UserInterface.generateFromGame(GameInterface.generateGame(height, width, mines));
             state.gaming = true;
             return state;
         });

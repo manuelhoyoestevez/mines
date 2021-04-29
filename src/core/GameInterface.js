@@ -18,13 +18,21 @@ const pushAll = (arr, plus) => {
 };
 
 class GameInterface {
-    constructor(tableBoard, mines, status = READY) {
+    constructor(tableBoard, mines, status) {
         this.tableBoard = tableBoard;
         this.mines = mines;
         this.status = status;
         this.last = null;
         this.pressedCelds = 0;
         this.targetCelds = this.tableBoard.width * this.tableBoard.height - this.mines;
+    }
+
+    get width() {
+        return this.tableBoard.width;
+    }
+
+    get height() {
+        return this.tableBoard.height;
     }
 
     getCeld(i, j) {
@@ -40,7 +48,7 @@ class GameInterface {
 
     pressCeld(i, j) {
         const celd = this.tableBoard.getCeld(i, j);
-
+///
         if (this.status === READY) {
             this.tableBoard.setCeld(i, j, PRESSED);
             this.tableBoard.disseminate(this.mines, MINE, celd => celd === UNPRESSED);
@@ -52,7 +60,7 @@ class GameInterface {
             this.last = celd;
             return [];
         }
-
+///
         if (UNPRESSED !== celd) {
             this.last = celd;
             return [];
@@ -101,16 +109,7 @@ GameInterface.generateGame = (height, width, mines) => {
 
     tableBoard.fillCelds(UNPRESSED);
 
-    return new GameInterface(tableBoard, mines);
-};
-
-GameInterface.generateTestGame = () => {
-    const tableBoard = new TableBoard(3, 4);
-
-    tableBoard.fillCelds(UNPRESSED);
-    tableBoard.setCeld(1, 1, MINE);
-
-    return new GameInterface(tableBoard, 0);
+    return new GameInterface(tableBoard, mines, READY);
 };
 
 export default GameInterface;

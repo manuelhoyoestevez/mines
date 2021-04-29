@@ -14,7 +14,7 @@ export default class App extends React.Component {
                         <h6 className="font-weight-bold text-primary">Mines</h6>
                     </div>
                     <div className="card-body">
-                        <Game width="10" height="10" mines="20"></Game>
+                        <Game width="60" height="60" mines="760"></Game>
                     </div>
                 </div>
             </div>

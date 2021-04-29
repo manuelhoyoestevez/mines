@@ -12,10 +12,12 @@ import {
 
 class UserInterface {
 
-    constructor(gameInterface, tableBoard) {
+    constructor(gameInterface, userTableBoard, processedTableBoard) {
         this.gameInterface = gameInterface;
-        this.tableBoard = tableBoard;
+        this.userTableBoard = userTableBoard;
+        this.processedTableBoard = processedTableBoard;
         this.marked = 0;
+        this.auto = false;
         this.reducerP = this.reducerP.bind(this);
         this.reducerM = this.reducerM.bind(this);
         this.reducerF = this.reducerF.bind(this);
@@ -28,11 +30,11 @@ class UserInterface {
     }
 
     get height() {
-        return this.tableBoard.height;
+        return this.userTableBoard.height;
     }
 
     get width() {
-        return this.tableBoard.width;
+        return this.userTableBoard.width;
     }
 
     get remain() {
@@ -40,14 +42,14 @@ class UserInterface {
     }
 
     get celds() {
-        return this.tableBoard.celds;
+        return this.userTableBoard.celds;
     }
 
     markCeld(i, j) {
-        const celd = this.tableBoard.getCeld(i, j);
+        const celd = this.userTableBoard.getCeld(i, j);
 
         if (celd === MARKED || celd === TO_MARK) {
-            this.tableBoard.setCeld(i, j, UNPRESSED);
+            this.userTableBoard.setCeld(i, j, UNPRESSED);
             this.marked--;
             return true;
         }
@@ -56,23 +58,23 @@ class UserInterface {
             return false;
         }
 
-        this.tableBoard.setCeld(i, j, MARKED);
+        this.userTableBoard.setCeld(i, j, MARKED);
         this.marked++;
         this.applyRules();
         return true;
     }
 
     pressCeld(i, j) {
-        const celd = this.tableBoard.getCeld(i, j);
+        const celd = this.userTableBoard.getCeld(i, j);
         if (celd !== UNPRESSED && celd !== TO_PRESS) {
             return false;
         }
 
-        this.gameInterface.pressCeld(i, j).forEach(([_i, _j, _v]) => this.tableBoard.setCeld(_i, _j, _v));
+        this.gameInterface.pressCeld(i, j).forEach(([_i, _j, _v]) => this.userTableBoard.setCeld(_i, _j, _v));
 
         if (this.gameInterface.last === MINE) {
             this.marked++;
-            this.tableBoard.setCeld(i, j, MINE);
+            this.userTableBoard.setCeld(i, j, MINE);
         }
 
         this.applyRules();
@@ -82,17 +84,15 @@ class UserInterface {
     applyRules() {
         for (let i = 0; i < this.height; i++) {
             for (let j = 0; j < this.width; j++) {
-                this.rule2([i, j]);
                 this.rule1([i, j]);
-                this.rule3([i, j]);
+                this.rule2([i, j]);
             }
         }
 
         for (let i = 0; i < this.height; i++) {
             for (let j = 0; j < this.width; j++) {
-                this.rule2([i, j]);
                 this.rule1([i, j]);
-                this.rule3([i, j]);
+                this.rule2([i, j]);
             }
         }
     }
@@ -125,21 +125,29 @@ class UserInterface {
     }
 
     isPlayable([i, j]) {
-        if (typeof this.gameInterface.getCeld(i, j) !== 'number') {
+        if (this.processedTableBoard.getCeld(i, j)) {
             return false;
         }
 
-        for(const celd of Celds.adyacents([i, j])) {
-            if (this.v(celd) === UNPRESSED) {
+        const value = this.gameInterface.getCeld(i, j);
+
+        if (typeof value !== 'number' || value <= 0) {
+            return false;
+        }
+
+        for(const adyacent of Celds.adyacents([i, j])) {
+            if (this.v(adyacent) === UNPRESSED) {
                 return true;
             }
         }
+
+        this.processedTableBoard.setCeld(i, j, true);
 
         return false;
     }
 
     v([i, j]) {
-        return this.tableBoard.getCeld(i, j);
+        return this.userTableBoard.getCeld(i, j);
     }
 
     P(celd) {
@@ -171,77 +179,88 @@ class UserInterface {
     }
 
     setToPress([i, j]) {
-        this.tableBoard.setCeld(i, j, TO_PRESS);
+        if (this.auto) {
+            this.pressCeld(i, j);
+        } else {
+            this.userTableBoard.setCeld(i, j, TO_PRESS);
+        }
     }
 
     setToMark([i, j]) {
         if (this.v([i ,j]) !== MINE) {
             this.marked++;
-            this.tableBoard.setCeld(i, j, TO_MARK);
+            this.userTableBoard.setCeld(i, j, TO_MARK);
         }
     }
 
     rule1(celd) {
-        if (this.isPlayable(celd)) {
-            if (this.v(celd) === this.m(celd)) {
-                this.F(celd).forEach(this.setToPress);
-            }
+        if (!this.isPlayable(celd)) {
+            return;
+        }
+
+        const F = this.F(celd);
+        const f = F.length;
+
+        if (f <= 0) {
+            return;
+        }
+
+        const v = this.v(celd);
+        const m = this.m(celd);
+
+        if (v === m + f) {
+            const [i, j] = celd;
+            this.processedTableBoard.setCeld(i, j, true);
+            F.forEach(this.setToMark);
+        } else if (v === m) {
+            const [i, j] = celd;
+            this.processedTableBoard.setCeld(i, j, true);
+            F.forEach(this.setToPress);
         }
     }
 
     rule2(celd) {
-        if (this.isPlayable(celd)) {
-            const F = this.F(celd);
-            const f = F.length;
-            if (f > 0 && this.v(celd) === this.m(celd) + f) {
-                F.forEach(this.setToMark);
+        if (!this.isPlayable(celd)) {
+            return;
+        }
+
+        Celds.confluents(celd).forEach(([i, j]) => {
+            if (!this.isPlayable([i, j])) {
+                return;
             }
-        }
-    }
 
-    rule3(celd) {
-        if (this.isPlayable(celd)) {
-            Celds.confluents(celd).forEach(([i, j]) => {
-                if (!this.isPlayable([i, j])) {
-                    return;
-                }
+            const FA = this.F(celd);
+            const FB = this.F([i, j]);
+            const fA = FA.length;
+            const fB = FB.length;
+            
+            if (fA <= fB) {
+                return;
+            }
+            
+            if (!Celds.isContainedOrEqual(FB, FA)) {
+                return;
+            }
 
-                const FA = this.F(celd);
-                const FB = this.F([i, j]);
-                
-                if (FA.length <= FB.length) {
-                    return;
-                }
-                
-                if (!Celds.isContainedOrEqual(FB, FA)) {
-                    return;
-                }
+            const rA = this.r(celd);
+            const rB = this.r([i, j]);
 
-                const rA = this.r(celd);
-                const rB = this.r([i, j]);
-
-                if (rA !== rB) {
-                    return;
-                }
-
+            if (rA === rB + fA - fB) {
+                Celds.difference(FA, FB).forEach(this.setToMark);
+            } else if (rA === rB) {
                 Celds.difference(FA, FB).forEach(this.setToPress);
-            });
-        }
+            }
+        });
     }
 }
 
-UserInterface.generateTestGame = () => {
-    const tableBoard = new TableBoard(3, 4);
-    tableBoard.fillCelds(UNPRESSED);
-    const gameInterface = GameInterface.generateTestGame();
-    return new UserInterface(gameInterface, tableBoard);
-}
-
-UserInterface.generateGame = (height, width, mines) => {
-    const tableBoard = new TableBoard(height, width);
-    tableBoard.fillCelds(UNPRESSED);
-    const gameInterface = GameInterface.generateGame(height, width, mines);
-    return new UserInterface(gameInterface, tableBoard);
+UserInterface.generateFromGame = (gameInterface) => {
+    const { height, width } = gameInterface;
+    const userTableBoard = new TableBoard(height, width);
+    userTableBoard.fillCelds(UNPRESSED);
+    const processedTableBoard = new TableBoard(height, width);
+    processedTableBoard.fillCelds(false);
+    return new UserInterface(gameInterface, userTableBoard, processedTableBoard);
 };
 
  export default UserInterface;
