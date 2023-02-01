@@ -48,7 +48,7 @@ class GameInterface {
 
     pressCeld(i, j) {
         const celd = this.tableBoard.getCeld(i, j);
-///
+
         if (this.status === READY) {
             this.tableBoard.setCeld(i, j, PRESSED);
             this.tableBoard.disseminate(this.mines, MINE, celd => celd === UNPRESSED);
@@ -60,7 +60,7 @@ class GameInterface {
             this.last = celd;
             return [];
         }
-///
+
         if (UNPRESSED !== celd) {
             this.last = celd;
             return [];

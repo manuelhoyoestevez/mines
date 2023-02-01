@@ -1,5 +1,4 @@
 import TableBoard from './TableBoard';
-import GameInterface from './GameInterface';
 import Celds from './Celds';
 
 import {
@@ -17,7 +16,7 @@ class UserInterface {
         this.userTableBoard = userTableBoard;
         this.processedTableBoard = processedTableBoard;
         this.marked = 0;
-        this.auto = false;
+        this.auto = true;
         this.reducerP = this.reducerP.bind(this);
         this.reducerM = this.reducerM.bind(this);
         this.reducerF = this.reducerF.bind(this);
